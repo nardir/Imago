@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Axerrio.Data.AOL.Context;
 using System.Data.Entity;
+using EntityState = Axerrio.Data.Entity.EntityState;
 
 namespace Axerrio.Data.AOL.Repository
 {
@@ -49,6 +50,18 @@ namespace Axerrio.Data.AOL.Repository
                 await context.SaveChangesAsync();
 
                 return picture;
+            }
+        }
+
+        public async Task UpdatePictureAsync(Picture picture)
+        {
+            picture.State = EntityState.Modified;
+            using (var context = new AOLContext())
+            {
+                var pictureRepo = context.EntityRepository<Picture>();
+                pictureRepo.UpdateEntity(picture);
+
+                await context.SaveChangesAsync();
             }
         }
     }

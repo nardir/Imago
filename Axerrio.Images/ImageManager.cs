@@ -17,18 +17,18 @@ namespace Axerrio.Images
 
             var fileBytes = File.ReadAllBytes(@"V:\Photos\741_3.jpg");
             var stream = new MemoryStream(fileBytes);
+
             WriteableBitmap writeableBmp = BitmapFactory.New(1, 1).FromStream(stream);
-
-            // var fileBytes = File.ReadAllBytes("V:\Photos\741_3.jpg");
-            // var stream = new MemoryStream(fileBytes);
-            // var bitmap = new BitmapImage(stream);
-            //  var bitmapSource = new BitmapSource();
-            //  var writeableBitmap = new WriteableBitmap();
-
             var resizedImage = writeableBmp.Resize(200, 200, WriteableBitmapExtensions.Interpolation.Bilinear);
+
+            var smallBytes = resizedImage.ToByteArray();
+
             
-          
-           
+
+            var fs = new BinaryWriter(new FileStream(@"C:\\small.jpg", FileMode.Append, FileAccess.Write));
+            fs.Write(smallBytes);
+            fs.Close();
+
 
         }
 

@@ -7,6 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{7EB19D85-3
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Axerrio.Data.AOL.Database", "Axerrio.Data.AOL.Database\Axerrio.Data.AOL.Database.sqlproj", "{0A032BBA-6186-4A2D-AAC9-69B19144BFC0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{F7086155-D79C-44F2-890C-D7DDF285C34B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axerrio.Data", "Axerrio.Data\Axerrio.Data.csproj", "{17A0D80B-333E-42BA-B14F-96782226C1F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axerrio.Data.EntityFramework", "Axerrio.Data.EntityFramework\Axerrio.Data.EntityFramework.csproj", "{FB98515C-7577-4998-B71E-73D2337EB91E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +25,22 @@ Global
 		{0A032BBA-6186-4A2D-AAC9-69B19144BFC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A032BBA-6186-4A2D-AAC9-69B19144BFC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A032BBA-6186-4A2D-AAC9-69B19144BFC0}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{17A0D80B-333E-42BA-B14F-96782226C1F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A0D80B-333E-42BA-B14F-96782226C1F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A0D80B-333E-42BA-B14F-96782226C1F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A0D80B-333E-42BA-B14F-96782226C1F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB98515C-7577-4998-B71E-73D2337EB91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB98515C-7577-4998-B71E-73D2337EB91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB98515C-7577-4998-B71E-73D2337EB91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB98515C-7577-4998-B71E-73D2337EB91E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0A032BBA-6186-4A2D-AAC9-69B19144BFC0} = {7EB19D85-388D-4E70-903D-F738E8CD97FC}
+		{F7086155-D79C-44F2-890C-D7DDF285C34B} = {7EB19D85-388D-4E70-903D-F738E8CD97FC}
+		{17A0D80B-333E-42BA-B14F-96782226C1F5} = {F7086155-D79C-44F2-890C-D7DDF285C34B}
+		{FB98515C-7577-4998-B71E-73D2337EB91E} = {F7086155-D79C-44F2-890C-D7DDF285C34B}
 	EndGlobalSection
 EndGlobal

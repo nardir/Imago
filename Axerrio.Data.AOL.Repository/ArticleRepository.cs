@@ -21,7 +21,7 @@ namespace Axerrio.Data.AOL.Repository
             }
         }
 
-        public async Task<Article> GetArticleByCode(string code)
+        public async Task<Article> GetArticleByCodeAsync(string code)
         {
             using (var context = new AOLContext())
             {

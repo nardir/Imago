@@ -12,5 +12,6 @@ namespace Axerrio.Data.AOL
         Task<IEnumerable<Article>> GetArticlesAsync();
 
         Task<Article> GetArticleByCodeAsync(string code);
+        Task<Picture> AddPictureAsync();
     }
 }

@@ -34,5 +34,22 @@ namespace Axerrio.Data.AOL.Repository
         public void Dispose()
         {
         }
+
+
+        public async Task<Picture> AddPictureAsync()
+        {
+            var picture = new Picture() { PictureTypeId = 2, State = Entity.EntityState.Added };
+
+            using (var context = new AOLContext())
+            {
+                var pictureRepo = context.EntityRepository<Picture>();
+
+                pictureRepo.AddEntity(picture);
+
+                await context.SaveChangesAsync();
+
+                return picture;
+            }
+        }
     }
 }

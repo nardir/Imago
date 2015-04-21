@@ -70,10 +70,6 @@ namespace Axerrio.API.AOL.Controllers
 
                     Picture picture = await articleRepo.AddPictureAsync();
 
-                    var pictureInfo = new PictureInfo() { PictureKey = picture.PictureKey };
-
-                    pictures.Add(pictureInfo);
-
                     //Resize and store in blov storage
                     var imageMedium = imageLarge.Resize(1024, 1024);
 
@@ -109,10 +105,14 @@ namespace Axerrio.API.AOL.Controllers
                         blockBlob.Properties.ContentType = "image/jpeg";
                         await blockBlob.UploadFromStreamAsync(imageStream);
 
-                        pictureInfo.UriLarge = blockBlob.Uri.ToString();
+                        var pictureInfo = new PictureInfo() { PictureKey = picture.PictureKey, UriLarge = blockBlob.Uri.ToString()};
+
+                        pictures.Add(pictureInfo);
+
+                        picture.UrlLarge = pictureInfo.UriLarge;
                     }
 
-                    //uri = blockBlob.Uri.AbsolutePath;
+                    //articleRepo
                 }
             }
 

@@ -9,6 +9,8 @@ namespace Axerrio.Data.AOL
 {
     public interface IArticleRepository : IDisposable
     {
-        Task<IEnumerable<Article>> GetArticlesAsync(); 
+        Task<IEnumerable<Article>> GetArticlesAsync();
+
+        Task<Article> GetArticleByCode(string code);
     }
 }

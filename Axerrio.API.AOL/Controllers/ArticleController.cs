@@ -16,6 +16,9 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.Drawing.Imaging;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Axerrio.Data.AOL.Model.DTO;
+using Newtonsoft.Json;
 
 namespace Axerrio.API.AOL.Controllers
 {
@@ -70,51 +73,78 @@ namespace Axerrio.API.AOL.Controllers
 
                     Picture picture = await articleRepo.AddPictureAsync();
 
-                    //Resize and store in blov storage
-                    var imageMedium = imageLarge.Resize(1024, 1024);
+                    ////Resize and store in blov storage
+                    //var imageMedium = imageLarge.Resize(1024, 1024);
 
-                    var imageSmall = imageLarge.Resize(200, 200);
+                    //var imageSmall = imageLarge.Resize(200, 200);
 
                     //var testName = content.Headers.ContentDisposition.Name;
 
                     // Retrieve storage account from connection string.
                     CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
                         CloudConfigurationManager.GetSetting("StorageConnectionString"));
-
+                    
                     // Create the blob client.
                     CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-
+                    
                     // Retrieve a reference to a container. 
-                    CloudBlobContainer container = blobClient.GetContainerReference("images");
+                    CloudBlobContainer imagesContainer = blobClient.GetContainerReference("images");
 
                     // Create the container if it doesn't already exist.
-                    container.CreateIfNotExists();
+                    imagesContainer.CreateIfNotExists();
 
-                    container.SetPermissions(new BlobContainerPermissions
+                    imagesContainer.SetPermissions(new BlobContainerPermissions
                     {
                         PublicAccess = BlobContainerPublicAccessType.Blob
                     });
 
-                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(string.Format("L{0}.jpg", picture.PictureKey));
+                    CloudBlockBlob imageBlob = imagesContainer.GetBlockBlobReference(string.Format("L{0}.jpg", picture.PictureKey));
                     using (var imageStream = new MemoryStream())
                     {
                         
                         imageLarge.Save(imageStream, ImageFormat.Jpeg);
                         imageStream.Position = 0;
 
-                        blockBlob.Properties.ContentType = "image/jpeg";
-                        await blockBlob.UploadFromStreamAsync(imageStream);
+                        imageBlob.Properties.ContentType = "image/jpeg";
+                        await imageBlob.UploadFromStreamAsync(imageStream);
 
-                        var pictureInfo = new PictureInfo() { PictureKey = picture.PictureKey, UriLarge = blockBlob.Uri.ToString()};
+                        var pictureInfo = new PictureInfo() { PictureKey = picture.PictureKey, UriLarge = imageBlob.Uri.ToString()};
 
                         pictures.Add(pictureInfo);
 
                         picture.UrlLarge = pictureInfo.UriLarge;
                     }
 
-                    //articleRepo
+                    await articleRepo.UpdatePictureAsync(picture);
+
+                    // Create the queue client.
+                    CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+
+                    // Retrieve a reference to a queue.
+                    CloudQueue queue = queueClient.GetQueueReference("images2process");
+
+                    // Create the queue if it doesn't already exist.
+                    queue.CreateIfNotExists();
+
+                    var pictureProcessMessage = new PictureProcessMessage() { PictureKey = picture.PictureKey};
+                    var pictureProcessMessageJson = await JsonConvert.SerializeObjectAsync(pictureProcessMessage);
+
+                    // send message to queue
+                    var message = new CloudQueueMessage(pictureProcessMessageJson);
+                    await queue.AddMessageAsync(message);
                 }
             }
+
+            return pictures;
+        }
+
+        [Route("imagestest")]
+        [HttpPost]
+        public async Task<IEnumerable<PictureInfo>> CreateImage([FromBody] byte[] image)
+        {
+            var pictures = new List<PictureInfo>();
+
+            //var imageStream 
 
             return pictures;
         }

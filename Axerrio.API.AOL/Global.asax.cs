@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Axerrio.Data.AOL.Repository;
+using Axerrio.Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +14,12 @@ namespace Axerrio.API.AOL
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            DataConfiguration.Configure(AOLDataConfig.Configure);
+
+            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            json.SerializerSettings.PreserveReferencesHandling =
+                Newtonsoft.Json.PreserveReferencesHandling.All;
         }
     }
 }

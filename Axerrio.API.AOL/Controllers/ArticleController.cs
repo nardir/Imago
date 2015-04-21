@@ -20,7 +20,7 @@ namespace Axerrio.API.AOL.Controllers
         {
             using (IArticleRepository articleRepo = new ArticleRepository())
             {
-                Article article = default(Article);
+                var article = await articleRepo.GetArticleByCodeAsync(code);
 
                 if (article == null)
                 {

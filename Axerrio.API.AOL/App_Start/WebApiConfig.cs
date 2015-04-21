@@ -21,8 +21,6 @@ namespace Axerrio.API.AOL
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
-            DataConfiguration.Configure(AOLDataConfig.Configure);
         }
     }
 }

@@ -136,6 +136,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="apiapp.json" />
+    <None Include="Properties\PublishProfiles\ximago - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ximago - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ximago - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ximago - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\ximago.pubxml" />
     <None Include="Properties\PublishProfiles\ximagoapi%28imago%29.pubxml" />
     <None Include="Web.Debug.config">
@@ -178,7 +182,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>15769</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

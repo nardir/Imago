@@ -75,10 +75,6 @@ namespace Axerrio.API.AOL.Controllers
                     Picture picture = await articleRepo.AddPictureAsync();
 
                     //Resize and store in blov storage
-                    var imageMedium = imageLarge.Resize(1024, 1024);
-
-                    var imageSmall = imageLarge.Resize(200, 200);
-
                     var testName = content.Headers.ContentDisposition.Name;
 
                      //Retrieve storage account from connection string.

@@ -74,5 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish\Azure.ximago.publish.xml" />
+    <None Include="Publish\ASKJA.ximago.publish.xml" />
   </ItemGroup>
 </Project>

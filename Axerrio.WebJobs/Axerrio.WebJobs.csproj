@@ -11,6 +11,21 @@
     <AssemblyName>Axerrio.WebJobs</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -72,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PictureQueueFunctions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -88,10 +104,39 @@
       <Project>{46fbda9a-ca58-4ccf-a3d3-c1ba70f131e6}</Project>
       <Name>Axerrio.Data.AOL.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Axerrio.Data.AOL.Repository\Axerrio.Data.AOL.Repository.csproj">
+      <Project>{32b37333-733f-4327-ac86-7283902c568d}</Project>
+      <Name>Axerrio.Data.AOL.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Axerrio.Data.AOL\Axerrio.Data.AOL.csproj">
+      <Project>{155d0690-1d7a-488d-8fef-5a79d7effb20}</Project>
+      <Name>Axerrio.Data.AOL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Axerrio.Data\Axerrio.Data.csproj">
+      <Project>{17a0d80b-333e-42ba-b14f-96782226c1f5}</Project>
+      <Name>Axerrio.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Axerrio.Images.AOL\Axerrio.Images.AOL.csproj">
       <Project>{c1cce99a-332c-418c-a54a-20e4a6c4838e}</Project>
       <Name>Axerrio.Images.AOL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.0.2\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.0.2\tools\webjobs.targets')" />

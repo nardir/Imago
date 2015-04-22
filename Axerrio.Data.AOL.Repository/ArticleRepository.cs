@@ -64,5 +64,15 @@ namespace Axerrio.Data.AOL.Repository
                 await context.SaveChangesAsync();
             }
         }
+
+
+        public async Task<Picture> GetPictureByKeyAsync(int pictureKey)
+        {
+            using (var context = new AOLContext())
+            {
+                var pictureRepo = context.EntityRepository<Picture>();
+                return await pictureRepo.Query().FirstOrDefaultAsync(p => p.PictureKey == pictureKey);
+            }
+        }
     }
 }

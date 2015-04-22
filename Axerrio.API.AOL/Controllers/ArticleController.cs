@@ -128,7 +128,8 @@ namespace Axerrio.API.AOL.Controllers
                     queue.CreateIfNotExists();
 
                     var pictureProcessMessage = new PictureProcessMessage() { PictureKey = picture.PictureKey };
-                    var pictureProcessMessageJson = await JsonConvert.SerializeObjectAsync(pictureProcessMessage);
+                    //var pictureProcessMessageJson = await JsonConvert.SerializeObjectAsync(pictureProcessMessage);
+                    var pictureProcessMessageJson = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(pictureProcessMessage));
 
                      //send message to queue
                     var message = new CloudQueueMessage(pictureProcessMessageJson);
@@ -139,48 +140,47 @@ namespace Axerrio.API.AOL.Controllers
             return pictures;
         }
 
-        //public void Test(HttpPostedFileBase image)
-        [Route("imagestest")]
-        [HttpPost]
-        //public async Task<IEnumerable<PictureInfo>> CreateImage([FromBody] byte[] image)
-        public async Task<IEnumerable<PictureInfo>> CreateImage(HttpPostedFileBase image)
-        {
-            var pictures = new List<PictureInfo>();
+        //[Route("imagestest")]
+        //[HttpPost]
+        ////public async Task<IEnumerable<PictureInfo>> CreateImage([FromBody] byte[] image)
+        //public async Task<IEnumerable<PictureInfo>> CreateImage(HttpPostedFileBase image)
+        //{
+        //    var pictures = new List<PictureInfo>();
 
-            //var imageStream = new MemoryStream(image);
-            //var imageLarge = Image.FromStream(imageStream);
-            var imageLarge = Image.FromStream(image.InputStream);
+        //    //var imageStream = new MemoryStream(image);
+        //    //var imageLarge = Image.FromStream(imageStream);
+        //    var imageLarge = Image.FromStream(image.InputStream);
 
-            // Retrieve storage account from connection string.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+        //    // Retrieve storage account from connection string.
+        //    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+        //        CloudConfigurationManager.GetSetting("StorageConnectionString"));
 
-            // Create the blob client.
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+        //    // Create the blob client.
+        //    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 
-            // Retrieve a reference to a container. 
-            CloudBlobContainer imagesContainer = blobClient.GetContainerReference("images");
+        //    // Retrieve a reference to a container. 
+        //    CloudBlobContainer imagesContainer = blobClient.GetContainerReference("images");
 
-            // Create the container if it doesn't already exist.
-            imagesContainer.CreateIfNotExists();
+        //    // Create the container if it doesn't already exist.
+        //    imagesContainer.CreateIfNotExists();
 
-            imagesContainer.SetPermissions(new BlobContainerPermissions
-            {
-                PublicAccess = BlobContainerPublicAccessType.Blob
-            });
+        //    imagesContainer.SetPermissions(new BlobContainerPermissions
+        //    {
+        //        PublicAccess = BlobContainerPublicAccessType.Blob
+        //    });
 
-            CloudBlockBlob imageBlob = imagesContainer.GetBlockBlobReference(string.Format("test.jpg"));
-            using (var imageStreamTest = new MemoryStream())
-            {
+        //    CloudBlockBlob imageBlob = imagesContainer.GetBlockBlobReference(string.Format("test.jpg"));
+        //    using (var imageStreamTest = new MemoryStream())
+        //    {
 
-                imageLarge.Save(imageStreamTest, ImageFormat.Jpeg);
-                imageStreamTest.Position = 0;
+        //        imageLarge.Save(imageStreamTest, ImageFormat.Jpeg);
+        //        imageStreamTest.Position = 0;
 
-                imageBlob.Properties.ContentType = "image/jpeg";
-                await imageBlob.UploadFromStreamAsync(imageStreamTest);
-            }
+        //        imageBlob.Properties.ContentType = "image/jpeg";
+        //        await imageBlob.UploadFromStreamAsync(imageStreamTest);
+        //    }
 
-            return pictures;
-        }
+        //    return pictures;
+        //}
     }
 }

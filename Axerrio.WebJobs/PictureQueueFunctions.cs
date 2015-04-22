@@ -17,42 +17,62 @@ namespace Axerrio.WebJobs
 {
     public class PictureQueueFunctions
     {
-        public async static void ProcessQueueMessage(
+        public async static Task ProcessQueueMessage(
             [QueueTrigger("images2process")] PictureProcessMessage processMessage,
             [Blob("images/L{PictureKey}.jpg", FileAccess.Read)] Stream input,
             [Blob("images/M{PictureKey}.jpg")] CloudBlockBlob mediumOutputBlob,
             [Blob("images/S{PictureKey}.jpg")] CloudBlockBlob smallOutputBlob
             )
         {
-            
+            try
+            {
+                int pictureKeyToProcess = processMessage.PictureKey;
+
+                Console.WriteLine("ImageKey:  " + pictureKeyToProcess);
+
+                var largeImage = Image.FromStream(input);
+
+                var smallImage = largeImage.Resize(200, 200);
+                var mediumImage = largeImage.Resize(1024, 1024);
+
+                using (var smallMemoryStream = smallOutputBlob.OpenWrite())
+                {
+                    smallOutputBlob.Properties.ContentType = "image/jpeg";
+                    smallImage.Save(smallMemoryStream, ImageFormat.Jpeg);
+                }
+
+                using (var mediumMemoryStream = mediumOutputBlob.OpenWrite())
+                {
+                    mediumOutputBlob.Properties.ContentType = "image/jpeg";
+                    mediumImage.Save(mediumMemoryStream, ImageFormat.Jpeg);
+                }
+
+                using (IArticleRepository articleRepo = new ArticleRepository())
+                {
+                    var picture = await articleRepo.GetPictureByKeyAsync(pictureKeyToProcess);
+
+                    picture.UrlSmall = smallOutputBlob.Uri.ToString();
+                    picture.UrlMedium = mediumOutputBlob.Uri.ToString();
+
+                    await articleRepo.UpdatePictureAsync(picture);
+                }
+
+               // throw new Exception("test");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async static void ProcessQueueMessagePoison(
+            [QueueTrigger("images2process-poison")] PictureProcessMessage processMessage
+            )
+        {
+
             int pictureKeyToProcess = processMessage.PictureKey;
-            throw new Exception("test");
-            var largeImage = Image.FromStream(input);
-            var smallImage = largeImage.Resize(200, 200);
-            var mediumImage = largeImage.Resize(1024, 1024);
-                
-            using (var smallMemoryStream = smallOutputBlob.OpenWrite())
-            {
-                smallOutputBlob.Properties.ContentType = "image/jpeg";
-                smallImage.Save(smallMemoryStream, ImageFormat.Jpeg);
-            }
 
-            using (var mediumMemoryStream = mediumOutputBlob.OpenWrite())
-            {
-                mediumOutputBlob.Properties.ContentType = "image/jpeg";
-                mediumImage.Save(mediumMemoryStream, ImageFormat.Jpeg);
-            }
-
-            using (IArticleRepository articleRepo = new ArticleRepository())
-            {
-                var picture = await articleRepo.GetPictureByKeyAsync(pictureKeyToProcess);
-
-                picture.UrlSmall = smallOutputBlob.Uri.ToString();
-                picture.UrlMedium = mediumOutputBlob.Uri.ToString();
-
-                await articleRepo.UpdatePictureAsync(picture);
-            }
-            
+            Console.WriteLine("[Poison] Deze blijft maar mislukken!:  " + pictureKeyToProcess);
         }
     }
 }

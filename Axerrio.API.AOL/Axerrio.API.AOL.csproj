@@ -137,8 +137,10 @@
   <ItemGroup>
     <Content Include="apiapp.json" />
     <None Include="Properties\PublishProfiles\ximago - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ximago - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\ximago - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ximago - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ximago - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\ximago - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\ximago.pubxml" />
     <None Include="Properties\PublishProfiles\ximagoapi%28imago%29.pubxml" />

@@ -18,7 +18,12 @@ namespace Axerrio.WebJobs
     {
         public static void Main(string[] args)
         {
-            JobHost host = new JobHost();
+            JobHostConfiguration config = new JobHostConfiguration();
+            config.Queues.BatchSize = 1;
+            config.Queues.MaxDequeueCount = 3;
+            config.Queues.MaxPollingInterval = TimeSpan.FromSeconds(15);
+            
+            JobHost host = new JobHost(config);
             host.RunAndBlock();
         }
 

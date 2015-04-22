@@ -20,6 +20,7 @@ using Microsoft.WindowsAzure.Storage.Queue;
 using Axerrio.Data.AOL.Model.DTO;
 using Newtonsoft.Json;
 using System.Web;
+using Microsoft.ApplicationInsights;
 
 namespace Axerrio.API.AOL.Controllers
 {
@@ -30,6 +31,11 @@ namespace Axerrio.API.AOL.Controllers
         [HttpGet]
         public async Task<Article> GetArticle(string code)
         {
+            var telemetry = new TelemetryClient();
+            telemetry.TrackTrace(string.Format("GetAricle code : {0}", code));
+
+            telemetry.TrackMetric("TestMetric", 100.5);
+
             using (IArticleRepository articleRepo = new ArticleRepository())
             {
                 var article = await articleRepo.GetArticleByCodeAsync(code);

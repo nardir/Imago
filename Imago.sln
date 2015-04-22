@@ -43,6 +43,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axerrio.API.AOL.Secure", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axerrio.AOL.Secure.Test", "Axerrio.AOL.Secure.Test\Axerrio.AOL.Secure.Test.csproj", "{4FCE8C9F-2A65-42F6-BA23-39E692CBA751}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6C45716F-2468-4118-8BE4-EACC24BF4C53}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{ACA1FB6C-D340-47E4-8CFD-9E2506709DB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -19,6 +19,7 @@ using System.Drawing.Imaging;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Axerrio.Data.AOL.Model.DTO;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace Axerrio.API.AOL.Controllers
 {
@@ -138,14 +139,17 @@ namespace Axerrio.API.AOL.Controllers
             return pictures;
         }
 
+        //public void Test(HttpPostedFileBase image)
         [Route("imagestest")]
         [HttpPost]
-        public async Task<IEnumerable<PictureInfo>> CreateImage([FromBody] byte[] image)
+        //public async Task<IEnumerable<PictureInfo>> CreateImage([FromBody] byte[] image)
+        public async Task<IEnumerable<PictureInfo>> CreateImage(HttpPostedFileBase image)
         {
             var pictures = new List<PictureInfo>();
 
-            var imageStream = new MemoryStream(image);
-            var imageLarge = Image.FromStream(imageStream);
+            //var imageStream = new MemoryStream(image);
+            //var imageLarge = Image.FromStream(imageStream);
+            var imageLarge = Image.FromStream(image.InputStream);
 
             // Retrieve storage account from connection string.
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(

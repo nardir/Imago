@@ -24,44 +24,35 @@ namespace Axerrio.WebJobs
             [Blob("images/S{PictureKey}.jpg")] CloudBlockBlob smallOutputBlob
             )
         {
-            try
+            int pictureKeyToProcess = processMessage.PictureKey;
+
+            Console.WriteLine("ImageKey:  " + pictureKeyToProcess);
+
+            var largeImage = Image.FromStream(input);
+
+            var smallImage = largeImage.Resize(200, 200);
+            var mediumImage = largeImage.Resize(1024, 1024);
+
+            using (var smallMemoryStream = smallOutputBlob.OpenWrite())
             {
-                int pictureKeyToProcess = processMessage.PictureKey;
-
-                Console.WriteLine("ImageKey:  " + pictureKeyToProcess);
-
-                var largeImage = Image.FromStream(input);
-
-                var smallImage = largeImage.Resize(200, 200);
-                var mediumImage = largeImage.Resize(1024, 1024);
-
-                using (var smallMemoryStream = smallOutputBlob.OpenWrite())
-                {
-                    smallOutputBlob.Properties.ContentType = "image/jpeg";
-                    smallImage.Save(smallMemoryStream, ImageFormat.Jpeg);
-                }
-
-                using (var mediumMemoryStream = mediumOutputBlob.OpenWrite())
-                {
-                    mediumOutputBlob.Properties.ContentType = "image/jpeg";
-                    mediumImage.Save(mediumMemoryStream, ImageFormat.Jpeg);
-                }
-
-                using (IArticleRepository articleRepo = new ArticleRepository())
-                {
-                    var picture = await articleRepo.GetPictureByKeyAsync(pictureKeyToProcess);
-
-                    picture.UrlSmall = smallOutputBlob.Uri.ToString();
-                    picture.UrlMedium = mediumOutputBlob.Uri.ToString();
-
-                    await articleRepo.UpdatePictureAsync(picture);
-                }
-
-               // throw new Exception("test");
+                smallOutputBlob.Properties.ContentType = "image/jpeg";
+                smallImage.Save(smallMemoryStream, ImageFormat.Jpeg);
             }
-            catch (Exception ex)
+
+            using (var mediumMemoryStream = mediumOutputBlob.OpenWrite())
             {
-                throw;
+                mediumOutputBlob.Properties.ContentType = "image/jpeg";
+                mediumImage.Save(mediumMemoryStream, ImageFormat.Jpeg);
+            }
+
+            using (IArticleRepository articleRepo = new ArticleRepository())
+            {
+                var picture = await articleRepo.GetPictureByKeyAsync(pictureKeyToProcess);
+
+                picture.UrlSmall = smallOutputBlob.Uri.ToString();
+                picture.UrlMedium = mediumOutputBlob.Uri.ToString();
+
+                await articleRepo.UpdatePictureAsync(picture);
             }
         }
 

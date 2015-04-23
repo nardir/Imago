@@ -69,7 +69,42 @@ namespace Axerrio.API.AOL.APIApp.Controllers
                 {
                     var articles = await articleRepo.GetArticlesAsync();
 
-                    return articles.Select(a => new ArticleDTO() { ArticleKey = a.ArticleKey, Code = a.Code });
+                    //return articles.Select(a => new ArticleDTO() { ArticleKey = a.ArticleKey, Code = a.Code, Description = a.Description });
+
+                    var articlesDTO = articles.Select(a => new ArticleDTO() { ArticleKey = a.ArticleKey, Code = a.Code, Description = a.Description }).ToList();
+
+                    var articleDTO = articlesDTO.First();
+                        
+                    articleDTO.Pictures.Add(new PictureDTO() { PictureKey = 1, PictureUri = "Picture test 1" });
+                    articleDTO.Pictures.Add(new PictureDTO() { PictureKey = 2, PictureUri = "Picture test 2" });
+                    articleDTO.Pictures.Add(new PictureDTO() { PictureKey = 3, PictureUri = "Picture test 3" });
+
+                    return articlesDTO;
+                }
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(ex.ToString())
+                };
+
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [Route("{code}")]
+        [HttpGet]
+        public async Task<ArticleDTO> GetArticleDTO(string code)
+        {
+            try
+            {
+
+                using (IArticleRepository articleRepo = new ArticleRepository())
+                {
+                    var article = await articleRepo.GetArticleByCodeAsync(code);
+
+                    return new ArticleDTO() { ArticleKey = article.ArticleKey, Code = article.Code, Description = article.Description };
                 }
             }
             catch (Exception ex)

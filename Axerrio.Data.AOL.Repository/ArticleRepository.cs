@@ -18,7 +18,7 @@ namespace Axerrio.Data.AOL.Repository
             {
                 var articleRepo = context.EntityRepository<Article>();
 
-                return await articleRepo.Query().Where(a => a.Deleted == false).Take(100).ToListAsync();
+                return await articleRepo.Query().Where(a => a.Deleted == false).Take(10).ToListAsync();
             }
         }
 

@@ -51,7 +51,7 @@ namespace Axerrio.API.AOL.Image.Controllers
             var provider = await Request.Content.ReadAsMultipartAsync<MultipartFormDataMemoryStreamProvider>(new MultipartFormDataMemoryStreamProvider());
 
             NameValueCollection formData = provider.FormData;
-            var value = formData[0];
+            //var value = formData[0];
             var files = provider.Files;
 
             foreach (HttpContent content in provider.Contents)

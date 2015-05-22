@@ -14,10 +14,12 @@ namespace Axerrio.API.AOL.Image.Models
     public class MultipartFormDataMemoryStreamProvider : MultipartStreamProvider
     {
         private NameValueCollection _formData = new NameValueCollection();
-        private List<HttpContent> _fileContents = new List<HttpContent>();
+        //private List<HttpContent> _fileContents = new List<HttpContent>();
+        private Collection<HttpContent> _fileContents = new Collection<HttpContent>();
 
         // Set of indexes of which HttpContents we designate as form data
         private Collection<bool> _isFormData = new Collection<bool>();
+        private Collection<MultipartFileData> _fileData = new Collection<MultipartFileData>();
 
         /// <summary>
         /// Gets a <see cref="NameValueCollection"/> of form data passed as part of the multipart form data.
@@ -30,9 +32,18 @@ namespace Axerrio.API.AOL.Image.Models
         /// <summary>
         /// Gets list of <see cref="HttpContent"/>s which contain uploaded files as in-memory representation.
         /// </summary>
-        public List<HttpContent> Files
+        //public List<HttpContent> Files
+        public Collection<HttpContent> Files
         {
             get { return _fileContents; }
+        }
+
+        public Collection<MultipartFileData> FileData 
+        {
+            get
+            {
+                return _fileData;
+            }
         }
 
         public override Stream GetStream(HttpContent parent, HttpContentHeaders headers)
@@ -75,6 +86,9 @@ namespace Axerrio.API.AOL.Image.Models
                 else
                 {
                     _fileContents.Add(Contents[index]);
+
+                    var disposition = Contents[index].Headers.ContentDisposition;
+                    _fileData.Add(new MultipartFileData(Contents[index].Headers, UnquoteToken(disposition.FileName)));
                 }
             }
         }

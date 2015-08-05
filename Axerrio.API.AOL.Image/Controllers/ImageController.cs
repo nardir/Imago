@@ -1,4 +1,5 @@
 ﻿using Axerrio.API.AOL.Image.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -52,6 +53,8 @@ namespace Axerrio.API.AOL.Image.Controllers
 
             NameValueCollection formData = provider.FormData;
             //var value = formData[0];
+            //var imageInfo = JsonConvert.DeserializeObject<ImageInfo>(value);
+
             var files = provider.Files;
 
             foreach (HttpContent content in provider.Contents)
@@ -61,6 +64,15 @@ namespace Axerrio.API.AOL.Image.Controllers
             }
 
 
+            MultipartFormDataContent c = new MultipartFormDataContent();
+            string value2 = "aap";
+
+            HttpContent c1 = new ByteArrayContent(System.Text.Encoding.Unicode.GetBytes(value2));
+            c.Add(c1, "test");
+
+            var value3b = c1.ReadAsByteArrayAsync().Result;
+            //string value3 = c1.ReadAsStringAsync().Result;
+            string value3 = System.Text.Encoding.Unicode.GetString(value3b);
 
             return Ok();
         }
